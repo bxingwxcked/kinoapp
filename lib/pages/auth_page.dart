@@ -6,7 +6,7 @@ class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
@@ -63,30 +63,46 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isWide = MediaQuery.of(context).size.width > 500;
+
     return Scaffold(
       body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          padding: const EdgeInsets.all(24),
+        child: Padding(
+          padding: EdgeInsets.all(isWide ? 32 : 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.movie_filter, size: 80, color: theme.colorScheme.primary),
+              Icon(
+                Icons.movie_filter,
+                size: isWide ? 100 : 80,
+                color: theme.colorScheme.primary,
+              ),
               const SizedBox(height: 24),
               Text(
                 _isLoginMode ? 'Вход в KinoBox' : 'Регистрация',
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: isWide ? 32 : 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 32),
               TextField(
                 controller: _loginController,
-                decoration: const InputDecoration(labelText: 'Логин', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                  labelText: 'Логин',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'Пароль', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                  labelText: 'Пароль',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.lock),
+                ),
               ),
               const SizedBox(height: 24),
               SizedBox(
@@ -103,12 +119,22 @@ class _AuthPageState extends State<AuthPage> {
               ),
               TextButton(
                 onPressed: () => setState(() => _isLoginMode = !_isLoginMode),
-                child: Text(_isLoginMode ? 'Нет аккаунта? Создать' : 'Уже есть аккаунт? Войти'),
+                child: Text(
+                  _isLoginMode ? 'Нет аккаунта? Создать' : 'Уже есть аккаунт? Войти',
+                  style: const TextStyle(fontSize: 16),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

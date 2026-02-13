@@ -3,8 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'models/cart_item.dart';
 import 'pages/home_page.dart';
 import 'pages/auth_page.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initialize();
   runApp(const KinoshkaApp());
 }
 
@@ -16,10 +19,10 @@ class KinoshkaApp extends StatefulWidget {
   const KinoshkaApp({super.key});
 
   @override
-  State<KinoshkaApp> createState() => _KinoshkaAppState();
+  State createState() => _KinoshkaAppState();
 
-  static _KinoshkaAppState of(BuildContext context) =>
-      context.findAncestorStateOfType<_KinoshkaAppState>()!;
+  static _KinoshkaAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_KinoshkaAppState>();
 }
 
 class _KinoshkaAppState extends State<KinoshkaApp> {

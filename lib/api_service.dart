@@ -6,8 +6,6 @@ class ApiService {
   static const String _baseUrl = 'https://api.tvmaze.com';
 
   Future<List<Movie>> getPopularMovies() async {
-    // TVMaze doesn't have a "popular" endpoint in the same way, 
-    // so we fetch shows scheduled for today as a "now playing" alternative
     final response = await http.get(
       Uri.parse('$_baseUrl/schedule?country=US'),
     );
